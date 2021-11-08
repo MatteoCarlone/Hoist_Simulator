@@ -22,18 +22,20 @@ int spawn(const char * program, char ** arg_list) {
   }
 }
 
-void create_fifo (const char * name){
+void create_fifo (const char * name){ 
     if(mkfifo(name, 0666)==-1){
         if (errno != EEXIST){
-        perror("Error creating named fifo\n");
-        exit (1);
+          perror("Error creating named fifo\n");
+          exit (1);
         }
     }
 }
 
 int main() {
-char * arg_list_1[] = { "./motor_x", NULL, NULL };
-char * arg_list_2[] = { "./motor_z", NULL, NULL };
+// char * arg_list_1[] = { "./motor_x", NULL, NULL };
+// char * arg_list_2[] = { "./motor_z", NULL, NULL };
+char * arg_list_1[] = { "./motor_x", "fifo_command_to_mot_x", NULL };
+char * arg_list_2[] = { "./motor_z", "fifo_command_to_mot_z", NULL };
 char * arg_list_3[] = { "/usr/bin/konsole",  "-e", "./command", (char*)NULL };
 char * arg_list_4[] = { "/usr/bin/konsole",  "-e", "./inspection", (char*)NULL };
 char * arg_list_5[] = {"./wd", NULL, NULL };
