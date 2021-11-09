@@ -40,7 +40,7 @@ int main(){
     }
 //close(fd_in);
 //close(fd_in_2);
-wait(child);
+// wait(child);
 return 0;
 
 }
