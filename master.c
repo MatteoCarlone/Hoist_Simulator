@@ -53,6 +53,13 @@ pid_inspection = spawn("/usr/bin/konsole", arg_list_4);
 //pid_wd = spawn("./wd", arg_list_5);
 
 wait(NULL);
+
+printf("Porcodio");
+fflush(stdout);
+unlink("fifo_command_to_mot_x");
+unlink("fifo_command_to_mot_z");
+unlink("fifo_est_pos_x");
+unlink("fifo_est_pos_z");
 return 0;
 
 }

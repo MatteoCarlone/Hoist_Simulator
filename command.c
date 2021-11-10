@@ -13,15 +13,21 @@ int main(void){
 
     int c_1 , c_2 , c_3;
     int fd_c_to_mx;
-    int d=1;
-    int s=2;
+    int right=1;
+    int left=2;
+    int xstop=3;
+    int stop=4;
 
     static struct termios oldt, newt;
     tcgetattr( STDIN_FILENO, &oldt);
     newt = oldt;
     newt.c_lflag &= ~(ICANON);          
     tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+    
     fd_c_to_mx=open("fifo_command_to_mot_x", O_WRONLY);
+    if (fd_c_to_mx==-1){
+        printf("Error while trying to open the pipe");
+    }
 
     while(1){
 
@@ -31,6 +37,12 @@ int main(void){
 
             case 115:
                 printf("ho letto : %c", c_1);
+                write(fd_c_to_mx, &stop, sizeof(int));
+            break;
+
+            case 120: //caso in cui premo x
+                printf("ho letto : %c", c_1);
+                write(fd_c_to_mx, &xstop, sizeof(int));
             break;
 
             case 27:
@@ -50,31 +62,17 @@ int main(void){
 
                     case 67:
                     	printf("\nfreccetta_a_destra\n");
-                        // fd_c_to_mx=open("fifo_command_to_mot_x", O_WRONLY);
-                        if (fd_c_to_mx==-1){
-                            printf("Error while trying to open the pipe");
-                            return 2;
-                        }
-                        write(fd_c_to_mx, &d, sizeof(int));
-                        //sleep(1);
-                        // close(fd_c_to_mx);
+                        write(fd_c_to_mx, &right, sizeof(int));
                     break;
 
                     case 68:
                     	printf("\nfreccetta_a_sinistra\n");
-                        // fd_c_to_mx=open("fifo_command_to_mot_x", O_WRONLY);
-                        if (fd_c_to_mx==-1){
-                            printf("Error while trying to open the pipe");
-                            return 2;
-                        }
-                        write(fd_c_to_mx, &s, sizeof(int));
-                        //sleep(1);
-                        // close(fd_c_to_mx);
+                        write(fd_c_to_mx, &left, sizeof(int));
                     break;
                 }
             break; 
             }
-        }  
+        }
     close(fd_c_to_mx);
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
     return 0;
