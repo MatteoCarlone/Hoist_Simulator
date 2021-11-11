@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/wait.h>
 
 pid_t pid_command, pid_motor_x, pid_motor_z, pid_inspection, pid_wd;
 char pid_motor_x_a[20], pid_motor_z_a[20], pid_command_a[20];
@@ -45,9 +46,8 @@ pid_command = spawn("/usr/bin/konsole", arg_list_3);
 sprintf(pid_motor_x_a, "%d", pid_motor_x);
 sprintf(pid_motor_z_a, "%d", pid_motor_z);
 sprintf(pid_command_a, "%d", pid_command);
-printf("%s\n", pid_motor_x_a);
 
-char * arg_list_4[] = { "/usr/bin/konsole",  "-e", "./inspection",(char*)NULL };
+char * arg_list_4[] = { "/usr/bin/konsole",  "-e", "./inspection", pid_motor_x_a, pid_motor_z_a, (char*)NULL };
 pid_inspection = spawn("/usr/bin/konsole", arg_list_4);
 char * arg_list_5[] = {"./wd", NULL, NULL };
 //pid_wd = spawn("./wd", arg_list_5);

@@ -12,11 +12,13 @@
 int main(void){   
 
     int c_1 , c_2 , c_3;
-    int fd_c_to_mx;
+    int fd_c_to_mx, fd_c_to_mz;
     int right=1;
     int left=2;
     int xstop=3;
-    int stop=4;
+    int up = 4;
+    int down = 5;
+    int zstop = 6;
 
     static struct termios oldt, newt;
     tcgetattr( STDIN_FILENO, &oldt);
@@ -28,6 +30,10 @@ int main(void){
     if (fd_c_to_mx==-1){
         printf("Error while trying to open the pipe");
     }
+    fd_c_to_mz=open("fifo_command_to_mot_z", O_WRONLY);
+    if (fd_c_to_mz == -1){
+        printf("Error while trying to open the fifo");
+    }
 
     while(1){
 
@@ -37,12 +43,16 @@ int main(void){
 
             case 115:
                 printf("ho letto : %c", c_1);
-                write(fd_c_to_mx, &stop, sizeof(int));
             break;
 
             case 120: //caso in cui premo x
                 printf("ho letto : %c", c_1);
                 write(fd_c_to_mx, &xstop, sizeof(int));
+            break;
+
+            case 122:
+                printf("ho letto : %c", c_1);
+                write(fd_c_to_mz, &zstop, sizeof(int));
             break;
 
             case 27:
@@ -54,10 +64,12 @@ int main(void){
 
                     case 65:
                     	printf("\nfreccetta_in_alto\n");
+                        write(fd_c_to_mz, &up, sizeof(int));
                     break;
 
                     case 66:
                     	printf("\nfreccetta_in_basso\n");
+                        write(fd_c_to_mz, &down, sizeof(int));
                     break;
 
                     case 67:

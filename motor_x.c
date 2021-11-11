@@ -7,13 +7,39 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/wait.h>
+
+int value;
+
+float position=0.0;
+
+void sighandler(int sig){
+	if(sig==SIGUSR1){
+		value=3;
+	}
+	if(sig==SIGUSR2){
+		
+		position=0.0;
+		value=3;
+	}
+}
 
 int main(int argc, char * argv[]){
+
 	int fd_c_to_mx, fd_mx_to_ins;
-	int value, ret;
+	int ret;
 	int print=50;
-	float step=0.001, position=0.0;
+	float step=0.001;
+
 	struct timeval tv={0,0};
+
+	struct sigaction sa;
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler=&sighandler;
+	sa.sa_flags=SA_RESTART;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2,&sa,NULL);
+
 	fd_set rset;
 	fd_c_to_mx = open(argv[1],O_RDONLY);
 	fd_mx_to_ins = open("fifo_est_pos_x", O_WRONLY);
@@ -47,10 +73,8 @@ int main(int argc, char * argv[]){
 
 			case 1:
 				if (position>=6.0){
-					print=0;
 				}
 				else{
-					print=1;
 					position+=step;
 				}
 				usleep(10000);
@@ -59,32 +83,21 @@ int main(int argc, char * argv[]){
 
 			case 2:
 				if (position<=0.0){
-					print=0;
 				}
 				else {
-					print=1;
 					position-=step;
 				}
 				usleep(10000);
 			break;
 
 			case 3:
-				if (print){
-					print=0;
-				}
 				usleep(10000);
 
 			break;
-
-			case 4:
-				return 1;
-			break;
 		}
-		if (print){
-			if (position>6.0) position=6.0;
-			if (position<0.0) position=0.0;
-			write(fd_mx_to_ins, &position, sizeof(float));
-		}												  
+		if (position>6.0) position=6.0;
+		if (position<0.0) position=0.0;
+		write(fd_mx_to_ins, &position, sizeof(float));												  
 	}
 	return 0;
 }
