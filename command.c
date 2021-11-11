@@ -9,6 +9,17 @@
 #include <string.h>
 #include <termios.h>
 
+#define BOLDBLACK "\033[1m\033[30m" /* Bold Black */
+#define BOLDRED "\033[1m\033[31m" /* Bold Red */
+#define BOLDGREEN "\033[1m\033[32m" /* Bold Green */
+#define BOLDYELLOW "\033[1m\033[33m" /* Bold Yellow */
+#define BOLDBLUE "\033[1m\033[34m" /* Bold Blue */
+#define BOLDMAGENTA "\033[1m\033[35m" /* Bold Magenta */
+#define BOLDCYAN "\033[1m\033[36m" /* Bold Cyan */
+#define BOLDWHITE "\033[1m\033[37m" /* Bold White */
+#define RESET "\033[0m"
+
+
 int main(void){   
 
     int c_1 , c_2 , c_3;
@@ -34,6 +45,14 @@ int main(void){
     if (fd_c_to_mz == -1){
         printf("Error while trying to open the fifo");
     }
+
+    printf(BOLDRED "Welcome to you my friend, this is a simulator of a hoist robot!" RESET "\n");    
+    printf(BOLDYELLOW "Here there's a list of commands:" RESET "\n");
+    printf(BOLDGREEN "If you want to move, press right arrow!" RESET "\n");
+    printf(BOLDCYAN "If you want to move back, press left arrow!" RESET "\n");
+    printf(BOLDBLUE "If you want to move down, press up arrow!" RESET "\n");
+    printf(BOLDBLUE "If you want to move up, press down arrow!" RESET "\n");
+    printf("To stop the movement of the two axis, you can press X or Z!\n");
 
     while(1){
 
@@ -63,22 +82,22 @@ int main(void){
                 switch(c_3){
 
                     case 65:
-                    	printf("\nfreccetta_in_alto\n");
+                    	printf("\nFreccetta in alto\n");
                         write(fd_c_to_mz, &up, sizeof(int));
                     break;
 
                     case 66:
-                    	printf("\nfreccetta_in_basso\n");
+                    	printf("\nFreccetta in basso\n");
                         write(fd_c_to_mz, &down, sizeof(int));
                     break;
 
                     case 67:
-                    	printf("\nfreccetta_a_destra\n");
+                    	printf("\nFreccetta a destra\n");
                         write(fd_c_to_mx, &right, sizeof(int));
                     break;
 
                     case 68:
-                    	printf("\nfreccetta_a_sinistra\n");
+                    	printf("\nFreccetta_a_sinistra\n");
                         write(fd_c_to_mx, &left, sizeof(int));
                     break;
                 }
