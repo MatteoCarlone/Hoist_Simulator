@@ -21,12 +21,12 @@ int main(int argc, char * argv[]){
 	struct timeval tv={0,0};
 
 	fd_set rset;
-
-	// static struct termios oldt, newt;
-    // tcgetattr( STDIN_FILENO, &oldt);
-    // newt = oldt;
-    // newt.c_lflag &= ~(ICANON);          
-    // tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+ 
+	static struct termios oldt, newt;
+    tcgetattr( STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON);          
+    tcsetattr( STDIN_FILENO, TCSANOW, &newt);
 
 	fd_mx_to_ins = open("fifo_est_pos_x",O_RDONLY);
 	if (fd_mx_to_ins == -1){
@@ -38,27 +38,26 @@ int main(int argc, char * argv[]){
 
 		FD_ZERO(&rset);
         FD_SET(fd_mx_to_ins, &rset);
+        FD_SET(0,&rset);
         ret=select(FD_SETSIZE, &rset, NULL, NULL, &tv);
 
 		if(ret==-1){
 			printf("There's an error on select.");
 			fflush(stdout);
 		}
-		else if(ret>=0){
+		else if(ret>0){
 			if (FD_ISSET(fd_mx_to_ins, &rset)>0){
 				read(fd_mx_to_ins, &position, sizeof(float));
 				printf("La posizione è: %f m\n", position);
+			}
+			if (FD_ISSET(0,&rset)>0){
+				read(0, &c_1, sizeof(char));
+				//if(c_1=='s'){
+				//	kill()
+				//}
 			}	
 		}
 	}
-	/* 	c_1=getchar();
-
-	 	switch(c_1){
-	 		case 115:
-                printf("ho letto : %c", c_1);
-            break;
-		}
-	}
-	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);*/
+	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 	return 0;
 }

@@ -80,9 +80,11 @@ int main(int argc, char * argv[]){
 				return 1;
 			break;
 		}
-		if (print){											// Non so per quale motivo (probabilmente perché
+		if (print){
+			if (position>6.0) position=6.0;
+			if (position<0.0) position=0.0;
 			write(fd_mx_to_ins, &position, sizeof(float));
-		}												  	// non sono capace) così è 0.1 m/s.
+		}												  
 	}
 	return 0;
 }
