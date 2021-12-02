@@ -1,0 +1,46 @@
+ _____ __    ___ ___    _       _     _          _           _     _           
+|     |  |  | . | . |  | |_ ___|_|___| |_    ___|_|_____ _ _| |___| |_ ___ ___ 
+| | | |  |__|_  |_  |  |   | . | |_ -|  _|  |_ -| |     | | | | .'|  _| . |  _|
+|_|_|_|_____|___|___|  |_|_|___|_|___|_|    |___|_|_|_|_|___|_|__,|_| |___|_|  
+                                                                               
+HOW TO INSTALL THE SIMULATOR.
+
+Steps to install (all the commands must be done on terminal):
+	- Run ./install.sh <pathname> 
+	- Open <pathname>
+	- Run ./run.sh
+Inside of the 'sources' folder there are all the folders with s-
+cripts inside of them. Inside of each 'scriptname' folder there
+are some files .txt to explain the tasks of the script.
+If you don't know how the scripts work, you can see all the .txt
+files showed one by one. Use the command:
+	- Run ./help.sh
+	
+INFORMATIONS ABOUT THE SIMULATOR.
+
+Welcome to the ML99 simulator of an hoist robot. The robot is a 
+double axis robot, x and z. The simulator has two different con-
+soles where the user can use different commands.
+The two consoles are:
+1. Command Console.
+2. Inspection Console.
+Both of them have different commands and buttons to make the si-
+mulator work inside the enviroment.
+First we talk about the Command Consoles keys:
+	- ↑ (up arrow) makes the z axis increase.
+	- ↓ (down arrow) makes the z axis decrease.
+	- → (right arrow) makes the x axis increase.
+	- ← (left arrow) makes the x axis decrease.
+	- x (x letter NOT CAPITAL!) makes the x axis movement stop.
+	- z (z letter NOT CAPITAL!) makes the z axis movement stop.
+Be careful! These commands can ONLY be used in command console.
+Now we talk about the Inspection Console keys:
+	- s (x letter NOT CAPITAL!) makes the all the system stops.
+	- r (r letter NOT CAPITAL!) makes the system reset by retur-
+	ning the value of x and z axis to 0. No other commands exce-
+	pt 's' can be used while the system is resetting.
+All the informations of your use and all the commands you press-
+ed are stored inside the 'logfile' folder inside the 'sources' 
+folder. Remember that everytime you run the program this file w-
+ill be reset.
+
